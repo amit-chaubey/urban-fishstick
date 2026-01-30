@@ -88,6 +88,19 @@ This compose config defines **three listeners**:
 ### Kafka CLI (inside the broker container)
 
 ```bash
+docker exec -it kafka kafka-topics --list --bootstrap-server localhost:9092
+docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --describe --topic orders
+```
+
+Get help for available options:
+
+```bash
+docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --help
+```
+
+Consume messages from the beginning:
+
+```bash
 docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --topic orders --from-beginning
 ```
 
