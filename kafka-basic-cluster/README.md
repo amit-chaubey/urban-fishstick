@@ -1,27 +1,13 @@
 ## Kafka Basic Cluster (KRaft) — Docker Compose
 
 <p align="center">
-  <a href="https://kafka.apache.org/">
-    <img alt="Apache Kafka" height="44" src="https://raw.githubusercontent.com/apache/kafka/trunk/docs/images/kafka_logo--simple.png" />
-  </a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://docs.confluent.io/platform/current/installation/docker/image-reference.html">
-    <img alt="Confluent" height="44" src="https://raw.githubusercontent.com/confluentinc/confluent-kafka-python/master/docs/images/confluent-logo.png" />
-  </a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://www.docker.com/">
-    <img alt="Docker" height="44" src="https://raw.githubusercontent.com/docker/docs/main/content/manuals/engine/images/docker-logo.png" />
-  </a>
-</p>
-
-<p align="center">
   <img alt="Kafka (KRaft)" src="https://img.shields.io/badge/Kafka-KRaft-231F20?logo=apachekafka&logoColor=white" />
   <img alt="Docker Compose" src="https://img.shields.io/badge/Docker_Compose-v2-2496ED?logo=docker&logoColor=white" />
   <img alt="Image" src="https://img.shields.io/badge/Image-confluentinc%2Fcp--kafka-0B3D91" />
 </p>
 
 ### What this is
-This repo starts a **single-node Apache Kafka broker** running in **KRaft mode (no ZooKeeper)** using Docker Compose. It is intended for **local development** and quick Kafka testing.
+This project starts a **single-node Apache Kafka broker** running in **KRaft mode (no ZooKeeper)** using Docker Compose. It is intended for **local development** and quick Kafka testing.
 
 ### Prerequisites
 - **Docker Desktop** (or Docker Engine)
@@ -54,6 +40,35 @@ Remove all data (fresh cluster):
 docker compose down -v
 ```
 
+### Python demo (producer + consumer)
+Create a virtualenv and install deps:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Run the consumer (leave it running):
+
+```bash
+python consumer.py
+```
+
+In another terminal, publish a few orders:
+
+```bash
+python producer.py
+```
+
+Notes:
+- The scripts default to `KAFKA_BOOTSTRAP_SERVERS=localhost:9092`.
+- To re-read from the beginning, use a new group id:
+
+```bash
+KAFKA_GROUP_ID=order-tracking-2 python consumer.py
+```
+
 ### Connectivity (ports + listeners)
 This compose config defines **three listeners**:
 - **HOST**: for clients on your laptop
@@ -70,6 +85,12 @@ This compose config defines **three listeners**:
 - **From another container in the same Compose project/network**:
   - `bootstrap.servers=kafka:9094`
 
+### Kafka CLI (inside the broker container)
+
+```bash
+docker exec -it kafka kafka-console-consumer --bootstrap-server localhost:9092 --topic orders --from-beginning
+```
+
 ### Notes (KRaft `CLUSTER_ID`)
 `CLUSTER_ID` must remain **stable** once the data volume exists.
 
@@ -78,6 +99,8 @@ This compose config defines **three listeners**:
 
 ### Files
 - `docker-compose.yaml`: Kafka service definition
+- `producer.py`: publishes sample `orders` events
+- `consumer.py`: prints received `orders` events
 
 ### Troubleshooting
 - **Port already in use (9092)**: stop the conflicting process/container or change the published port mapping.
