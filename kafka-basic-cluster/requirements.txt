@@ -1,1 +1,5 @@
 confluent-kafka
+json
+os
+typing
+uuid
