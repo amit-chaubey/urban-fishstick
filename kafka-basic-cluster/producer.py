@@ -1,10 +1,12 @@
 import json
+import os
 import uuid
 
 from confluent_kafka import Producer
 
 
 TOPIC = "orders"
+BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 
 
 def delivery_report(err, msg):
@@ -40,7 +42,7 @@ def build_orders():
 
 
 def main():
-    producer = Producer({"bootstrap.servers": "localhost:9092"})
+    producer = Producer({"bootstrap.servers": BOOTSTRAP_SERVERS})
 
     for order in build_orders():
         value = json.dumps(order).encode("utf-8")

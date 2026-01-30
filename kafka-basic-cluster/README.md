@@ -7,7 +7,7 @@
 </p>
 
 ### What this is
-This project starts a **single-node Apache Kafka broker** running in **KRaft mode (no ZooKeeper)** using Docker Compose. It is intended for **local development** and quick Kafka testing.
+This project starts a **single-node Kafka broker** (via Confluent’s `confluentinc/cp-kafka` image) running in **KRaft mode (no ZooKeeper)** using Docker Compose. It is intended for **local development** and quick Kafka testing.
 
 ### Prerequisites
 - **Docker Desktop** (or Docker Engine)

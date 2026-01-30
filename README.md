@@ -7,7 +7,7 @@
 </p>
 
 ### Overview
-This repository contains small, **self-contained Kafka projects** for local development and learning.
+This repository contains small, **self-contained Kafka projects** for local development and learning (typically using Confluent’s `confluentinc/cp-kafka` Docker image).
 
 ### Projects
 - **`kafka-basic-cluster/`**: Single-node **Kafka (KRaft)** cluster via Docker Compose  
